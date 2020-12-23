@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453798104297",
+    "project_id": "fireauth-1caba",
+    "storage_bucket": "fireauth-1caba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453798104297:android:e5d441a37fda3f541d3478",
+        "android_client_info": {
+          "package_name": "com.technorivals.fireauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453798104297-dah266982ea85h68t6lmgo99ep2c5gbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technorivals.fireauth",
+            "certificate_hash": "f54d229fe90a2a623ea85de782a02a51cc860ac3"
+          }
+        },
+        {
+          "client_id": "453798104297-k36c8n6e7klsid061guq40f96b795v9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqBDOnZ3Gq08CemiqtaoOeoUuk_a9hTAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453798104297-k36c8n6e7klsid061guq40f96b795v9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
