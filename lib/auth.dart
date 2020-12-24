@@ -1,3 +1,4 @@
+import 'package:fireauth/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +8,8 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 String name;
 String email;
 String imageUrl;
+auth.User newUser;
+String data = "Ho";
 
 Future<String> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -42,6 +45,8 @@ Future<String> signInWithGoogle() async {
     if (name.contains(" ")) {
       name = name.substring(0, name.indexOf(" "));
     }
+    newUser = user;
+
     return '$user';
   }
   return null;

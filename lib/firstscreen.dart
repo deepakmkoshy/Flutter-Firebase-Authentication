@@ -1,8 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fireauth/auth.dart';
 import 'package:fireauth/login.dart';
 import 'package:flutter/material.dart';
+// import 'firestore.dart';
 
-class FirstScreen extends StatelessWidget {
+class FirstScreen extends StatefulWidget {
+  @override
+  _FirstScreenState createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
+  String dat = "Loading...";
+
+  @override
+  void initState()  {
+    super.initState();
+    getStr();
+  }
+
+
+  Future<void> getStr() async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    print(newUser.uid);
+    users
+        .doc(newUser.uid)
+        .set({"def": "You are " + newUser.displayName + " "})
+        .then((value) => print("Added new user"))
+        .catchError((onError) => print("Err"));
+
+    users.doc(newUser.uid).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          dat = documentSnapshot.data()['def'].toString();
+        });
+      } else {
+        dat = "Nope";
+        print(dat);
+      }
+    }).catchError((onError) => print("Err"));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +80,14 @@ class FirstScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
-              
+              Text(
+                dat,
+                style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
               Text(
                 'EMAIL',
                 style: TextStyle(
