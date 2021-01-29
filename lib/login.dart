@@ -1,3 +1,4 @@
+import 'package:fireauth/fs_phone.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'auth.dart';
@@ -14,6 +15,7 @@ class _LoginState extends State<Login> {
   auth.User user;
   final _codeController = TextEditingController();
   final _phoneController = TextEditingController();
+  bool _isAuthenticated = false;
 
   @override
   void initState() {
@@ -21,36 +23,52 @@ class _LoginState extends State<Login> {
   }
 
   void loginUserwithPhone(String phone, BuildContext context) async {
+    print(phone);
     auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Auto-verifying OTP'),
+                SizedBox(height: 2),
+                CircularProgressIndicator(),
+              ],
+            ),
+          );
+        });
     _auth.verifyPhoneNumber(
-        phoneNumber: phone,
+      phoneNumber: phone,
 
-        //This would be called only if the SMS is automatically
-        //retrieved and NOT manually entered
-        verificationCompleted: (auth.PhoneAuthCredential credential) async {
-          // Navigator.of(context).pop();
-          var result = await _auth.signInWithCredential(credential).then((value) {
-            auth.User user = value.user;
+      //This would be called only if the SMS is automatically
+      //retrieved and NOT manually entered
+      verificationCompleted: (auth.PhoneAuthCredential credential) async {
+        Navigator.of(context).pop();
+        await _auth.signInWithCredential(credential).then((value) {
+          auth.User user = value.user;
 
           if (user != null) {
+            _isAuthenticated = true;
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return FirstScreen(user: user);
+                  return PhoneFirstScreen(user: user);
                 },
               ),
             );
           } else {
             print("Errrrrrrr");
           }
-
-          });
-          
-        },
-        verificationFailed: (auth.FirebaseAuthException exception) {
-          print(exception);
-        },
-        codeSent: (String verificationId, int forceResendingToken) {
+        });
+      },
+      verificationFailed: (auth.FirebaseAuthException exception) {
+        print(exception);
+      },
+      codeSent: (String verificationId, int forceResendingToken) async {
+        await Future.delayed(Duration(seconds: 6));
+        if (!_isAuthenticated) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -79,7 +97,7 @@ class _LoginState extends State<Login> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) {
-                              return FirstScreen(user: user);
+                              return PhoneFirstScreen(user: user);
                             },
                           ),
                         );
@@ -95,8 +113,12 @@ class _LoginState extends State<Login> {
               );
             },
           );
-        },
-        codeAutoRetrievalTimeout: (String numb) {print('##########errr#######');},);
+        }
+      },
+      codeAutoRetrievalTimeout: (String numb) {
+        print('##########errr#######');
+      },
+    );
   }
 
   Widget googleLoginButton() {
@@ -171,13 +193,23 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlutterLogo(size: 150),
-              TextField(
-                controller: _phoneController,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Don\'t include +91',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  controller: _phoneController,
+                ),
               ),
               SizedBox(height: 16),
               FlatButton(
                 onPressed: () {
-                  loginUserwithPhone(_phoneController.text, context);
+                  print('+91${_phoneController.text}');
+                  loginUserwithPhone('+91${_phoneController.text}', context);
                 },
                 child: Text('Login'),
                 textColor: Colors.white,

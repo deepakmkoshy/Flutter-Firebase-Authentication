@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fireauth/auth.dart';
 import 'package:fireauth/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'firestore.dart';
 
 class FirstScreen extends StatefulWidget {
 
-  final User user;
-
-   FirstScreen({this.user}) ;
+  
   @override
   _FirstScreenState createState() => _FirstScreenState();
 }
