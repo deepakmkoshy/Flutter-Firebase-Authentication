@@ -1,6 +1,6 @@
-import 'package:fireauth/fs_phone.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'auth.dart';
 import 'firstscreen.dart';
 
@@ -13,116 +13,118 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   auth.User user;
-  final _codeController = TextEditingController();
-  final _phoneController = TextEditingController();
-  bool _isAuthenticated = false;
+  // final _codeController = TextEditingController();
+  // final _phoneController = TextEditingController();
+  // bool _isAuthenticated = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  void loginUserwithPhone(String phone, BuildContext context) async {
-    print(phone);
-    auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Auto-verifying OTP'),
-                SizedBox(height: 2),
-                CircularProgressIndicator(),
-              ],
-            ),
-          );
-        });
-    _auth.verifyPhoneNumber(
-      phoneNumber: phone,
+  // void loginUserwithPhone(String phone, BuildContext context) async {
+  //   print(phone);
+  //   auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           content: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Text('Auto-verifying OTP'),
+  //               SizedBox(height: 2),
+  //               CircularProgressIndicator(),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  //   _auth.verifyPhoneNumber(
+  //     phoneNumber: phone,
 
-      //This would be called only if the SMS is automatically
-      //retrieved and NOT manually entered
-      verificationCompleted: (auth.PhoneAuthCredential credential) async {
-        Navigator.of(context).pop();
-        await _auth.signInWithCredential(credential).then((value) {
-          auth.User user = value.user;
+  //     //This would be called only if the SMS is automatically
+  //     //retrieved and NOT manually entered
+  //     verificationCompleted: (auth.PhoneAuthCredential credential) async {
+  //       Navigator.of(context).pop();
+  //       await _auth.signInWithCredential(credential).then((value) {
+  //         auth.User user = value.user;
 
-          if (user != null) {
-            _isAuthenticated = true;
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return PhoneFirstScreen(user: user);
-                },
-              ),
-            );
-          } else {
-            print("Errrrrrrr");
-          }
-        });
-      },
-      verificationFailed: (auth.FirebaseAuthException exception) {
-        print(exception);
-      },
-      codeSent: (String verificationId, int forceResendingToken) async {
-        await Future.delayed(Duration(seconds: 6));
-        if (!_isAuthenticated) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Enter the OTP'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: _codeController,
-                    ),
-                  ],
-                ),
-                actions: [
-                  FlatButton(
-                    onPressed: () async {
-                      final code = _codeController.text.trim();
-                      auth.AuthCredential credential =
-                          auth.PhoneAuthProvider.credential(
-                              verificationId: verificationId, smsCode: code);
-                      var result = await _auth.signInWithCredential(credential);
-                      auth.User user = result.user;
+  //         if (user != null) {
+  //           _isAuthenticated = true;
+  //           Navigator.of(context).push(
+  //             MaterialPageRoute(
+  //               builder: (context) {
+  //                 return PhoneFirstScreen(user: user);
+  //               },
+  //             ),
+  //           );
+  //         } else {
+  //           print("Errrrrrrr");
+  //         }
+  //       });
+  //     },
+  //     verificationFailed: (auth.FirebaseAuthException exception) {
+  //       print(exception);
+  //     },
+  //     codeSent: (String verificationId, int forceResendingToken) async {
+  //       await Future.delayed(Duration(seconds: 6));
+  //       if (!_isAuthenticated) {
+  //         showDialog(
+  //           context: context,
+  //           barrierDismissible: false,
+  //           builder: (context) {
+  //             return AlertDialog(
+  //               title: Text('Enter the OTP'),
+  //               content: Column(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   TextField(
+  //                     controller: _codeController,
+  //                   ),
+  //                 ],
+  //               ),
+  //               actions: [
+  //                 FlatButton(
+  //                   onPressed: () async {
+  //                     final code = _codeController.text.trim();
+  //                     auth.AuthCredential credential =
+  //                         auth.PhoneAuthProvider.credential(
+  //                             verificationId: verificationId, smsCode: code);
+  //                     var result = await _auth.signInWithCredential(credential);
+  //                     auth.User user = result.user;
 
-                      if (user != null) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return PhoneFirstScreen(user: user);
-                            },
-                          ),
-                        );
-                      } else {
-                        print("Errrrrrrr");
-                      }
-                    },
-                    child: Text('Confirm'),
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                  )
-                ],
-              );
-            },
-          );
-        }
-      },
-      codeAutoRetrievalTimeout: (String numb) {
-        print('##########errr#######');
-      },
-    );
-  }
+  //                     if (user != null) {
+  //                       Navigator.of(context).push(
+  //                         MaterialPageRoute(
+  //                           builder: (context) {
+  //                             return PhoneFirstScreen(user: user);
+  //                           },
+  //                         ),
+  //                       );
+  //                     } else {
+  //                       print("Errrrrrrr");
+  //                     }
+  //                   },
+  //                   child: Text('Confirm'),
+  //                   textColor: Colors.white,
+  //                   color: Colors.blue,
+  //                 )
+  //               ],
+  //             );
+  //           },
+  //         );
+  //       }
+  //     },
+  //     codeAutoRetrievalTimeout: (String numb) {
+  //       print('##########errr#######');
+  //     },
+  //   );
+  // }
 
   Widget googleLoginButton() {
-    return OutlineButton(
+    return RaisedButton(
+      color: Colors.white,
+      elevation: 30,
       onPressed: () {
         signInWithGoogle().then((result) {
           if (result != null) {
@@ -138,7 +140,7 @@ class _LoginState extends State<Login> {
       },
       splashColor: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      borderSide: BorderSide(color: Colors.grey),
+      // borderSide: BorderSide(color: Colors.grey),
       child: Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -162,64 +164,65 @@ class _LoginState extends State<Login> {
     );
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: Container(
-//       color: Colors.white,
-//       child: Center(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             FlutterLogo(size: 150),
-//             SizedBox(height: 50),
-//             googleLoginButton(),
-//           ],
-//         ),
-//       ),
-//     ));
-//   }
-// }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlutterLogo(size: 150),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Don\'t include +91',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  controller: _phoneController,
-                ),
-              ),
-              SizedBox(height: 16),
-              FlatButton(
-                onPressed: () {
-                  print('+91${_phoneController.text}');
-                  loginUserwithPhone('+91${_phoneController.text}', context);
-                },
-                child: Text('Login'),
-                textColor: Colors.white,
-                color: Colors.blue,
-                padding: EdgeInsets.all(8.0),
-              )
-            ],
-          ),
+        body: Container(
+      color: Colors.white,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SvgPicture.asset('assets/Confirmed-bro.svg',
+            fit: BoxFit.contain,),
+            // SizedBox(height: 50),
+            googleLoginButton(),
+          ],
         ),
       ),
-    );
+    ));
   }
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Container(
+//         color: Colors.white,
+//         child: Center(
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               FlutterLogo(size: 150),
+//               Padding(
+//                 padding: const EdgeInsets.all(8.0),
+//                 child: TextField(
+//                   decoration: InputDecoration(
+//                     labelText: 'Don\'t include +91',
+//                     border: OutlineInputBorder(
+//                       borderRadius: BorderRadius.circular(5.0),
+//                     ),
+//                   ),
+//                   controller: _phoneController,
+//                 ),
+//               ),
+//               SizedBox(height: 16),
+//               FlatButton(
+//                 onPressed: () {
+//                   print('+91${_phoneController.text}');
+//                   loginUserwithPhone('+91${_phoneController.text}', context);
+//                 },
+//                 child: Text('Login'),
+//                 textColor: Colors.white,
+//                 color: Colors.blue,
+//                 padding: EdgeInsets.all(8.0),
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
