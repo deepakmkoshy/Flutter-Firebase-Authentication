@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -167,21 +169,53 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      color: Colors.white,
-      child: Center(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SvgPicture.asset('assets/Confirmed-bro.svg',
-            fit: BoxFit.contain,),
+            SvgPicture.asset(
+              'assets/Confirmed-bro.svg',
+              fit: BoxFit.contain,
+            ),
+            Center(
+              child: Container(
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      blurRadius: 14,
+                      spreadRadius: 10,
+                      color: Colors.black.withOpacity(0.1))
+                ]),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                    child: Container(
+                      height: 100,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                            width: 1.5, color: Colors.white.withOpacity(0.2)),
+                      ),
+                      child: Center(child: Text('Glass Morphism'),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ),
             // SizedBox(height: 50),
-            googleLoginButton(),
+            // googleLoginButton(),
           ],
         ),
       ),
-    ));
+    );
   }
 }
 
