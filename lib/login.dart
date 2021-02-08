@@ -16,55 +16,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   auth.User user;
-  
 
   @override
   void initState() {
     super.initState();
-  }
-
-  
-
-  Widget googleLoginButton() {
-    return RaisedButton(
-      color: Colors.white,
-      elevation: 30,
-      onPressed: () {
-        signInWithGoogle().then((result) {
-          if (result != null) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return FirstScreen();
-                },
-              ),
-            );
-          }
-        });
-      },
-      splashColor: Colors.grey,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
-            Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -81,7 +36,6 @@ class _LoginState extends State<Login> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             ClipPath(
               clipper: TopCustomClipper(),
               child: Container(
@@ -117,10 +71,13 @@ class _LoginState extends State<Login> {
                         child: Column(
                           children: [
                             Text(
-                              'Login With',
+                              'LOGIN',
                               style: TextStyle(
                                   fontSize: width / 20,
                                   fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
                             ),
                             RaisedButton(
                               color: Colors.white.withOpacity(0.8),
@@ -169,21 +126,22 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
                             //Sign in with phone
                             RaisedButton(
                               color: Colors.white.withOpacity(0.8),
                               elevation: 10,
                               onPressed: () {
-                                
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return LoginPhone();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return LoginPhone();
+                                    },
+                                  ),
+                                );
+                              },
                               splashColor: Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -197,7 +155,10 @@ class _LoginState extends State<Login> {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Icon(Icons.phone),
+                                    Icon(
+                                      Icons.phone,
+                                      size: 35,
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
                                       child: Text(
@@ -220,15 +181,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
-
-
 
 class TopCustomClipper extends CustomClipper<Path> {
   @override

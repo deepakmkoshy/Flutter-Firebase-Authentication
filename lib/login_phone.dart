@@ -128,8 +128,10 @@ class _LoginPhoneState extends State<LoginPhone> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                    labelText: 'Don\'t include +91',
+                    prefixText: '+91',
+                    hintText: '\tDon\'t include +91',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
